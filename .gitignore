@@ -1,0 +1,23 @@
+Rendu_MNT
+# Compiled Object files
+∗.slo
+∗.lo
+∗.o
+∗.obj
+# Compiled libraries
+∗.so
+∗. dll
+∗.a
+∗. lib
+# Executables
+∗.exe
+∗.out
+∗.app
+# hidden sources
+∗._cpp
+∗._h
+∗._py
+∗~
+# build directory
+make
+build
