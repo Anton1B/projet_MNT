@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include <bitset>
 
 using namespace std;
 
@@ -73,7 +72,7 @@ using namespace std;
 int main()
 {
 
-    string filename = "guerledan.ppm";
+    string filename = "guerledan.pgm";
     ofstream ofst(filename); // ouverture en écriture
     
     // ..tests d’ouverture..
@@ -82,8 +81,8 @@ int main()
         cout << "Erreur d’ouverture de " << filename << endl;
     }
     
-    //Initialisation du fichier avec le nombre magique P6 et les dimensions de l'image
-    ofst << "P3" << endl << "1706 1607" << endl << "3200" << endl ; 
+    //Initialisation du fichier avec le nombre magique P2 et les dimensions de l'image
+    ofst << "P2" << endl << "1706 1607" << endl << "1000" << endl ; // "1669 1572" "1706 1607"
 
 
     //---------------------------------------------------------------------------------------------------------------
@@ -111,11 +110,8 @@ int main()
     //Pour la projection
     double l93_e = 0.0;
     double l93_n = 0.0;
-
+    // double* pt_coord;
     double coord[2];
-
-    //Colormap haxby
-    int haxby[96] = {45,0,124,67,0,153,35,72,177,36,83,202,77,0,217,80,0,228,76,32,244,65,92,253,27,162,255,33,181,255,47,190,251,59,229,241,58,244,226,86,247,200,101,250,172,147,255,164,186,255,155,210,255,132,231,249,111,243,255,91,255,194,71,255,161,49,255,106,65,250,39,70,255,50,82,244,123,124,255,147,156,251,174,172,255,189,194,255,210,213,255,233,235,255,255,255};
 
     //---------------------------------------------------------------------------------------------------------------
 
@@ -271,14 +267,14 @@ int main()
             // Initialisation d'une liste représentant une ligne de pixels noirs
 
             int **set_point = new int*[1607];
-            for(int i = 0; i < 1608; ++i)
+            for(int i = 0; i < 1706; ++i)
             {
                 set_point[i] = new int[1706];
             }
             
-            for(int i = 0; i < 1608; ++i)
+            for(int i = 0; i < 1607; ++i)
             {
-                for(int j= 0; j < 1707; ++j)
+                for(int j= 0; j < 1706; ++j)
                 {
                     set_point[i][j] = 0;
                     //cout << "ok" << endl;
@@ -332,7 +328,7 @@ int main()
                 alt_2 = alt_2*-1;
                 alt_2 += max_alt;
 
-                conv_alt_gris = alt_2*(3200/etendue_alt); 
+                conv_alt_gris = alt_2*(1000/etendue_alt); 
 
 
                 
@@ -396,99 +392,19 @@ int main()
                     
                 
             }
+    
+            
 
 
-            //Initialisation des variables pour le remplissage du .ppm en couleurs
-            int test_col;
-            double conv_col = 0;
-            int id_conv_col = 0;
-            int col_r = 0;
-            int col_g = 0;
-            int col_b = 0;
-            string col_rgb;
-
-            for(int i = 1607; i > 1; i=i-1)
+            for(int i = 1606; i > 0; i=i-1)
             {
                 for(int j= 0; j < 1706 ; j++)
-
                 {
-                    //Ecriture du fichier en binaire pour la colormap haxby
-
-                    // test_col = set_point[i][j];
-                    // if (test_col == 0)
-                    // {
-                    //     bitset<8> c_r(0);
-                    //     bitset<8> c_g(0);
-                    //     bitset<8> c_b(0);
-
-                    //     ofst << c_r <<" "<<c_g<<" "<<c_b<<endl;
-                    // }
-                    // else 
-                    // {
-                    //     conv_col = set_point[i][j];
-                    //     conv_col = int(conv_col/100) ;
-
-                    //     if (conv_col<=0)
-                    //     {
-                    //         conv_col = 0;
-                    //     }
-
-                    //     id_conv_col = conv_col*3;
-
-                    //     col_r = haxby[id_conv_col];
-                    //     col_g = haxby[id_conv_col+1];
-                    //     col_b = haxby[id_conv_col+2];
-
-                    //     bitset<8> c_r(col_r);
-                    //     bitset<8> c_g(col_g);
-                    //     bitset<8> c_b(col_b);
-
-                    //     ofst << c_r <<" "<<c_g<<" "<<c_b<<endl ; 
-                    // }
-
-                    //-------------------------------------------------------------------------------------
-                    // Ecriture du fichier en ASCII pour la colormap haxby
-                    test_col = set_point[i][j];
-
-                    if(test_col == 0)
-                    {
-
-                        ofst << "0" <<" "<<"0"<<" "<<"0"<<endl;
-                    }
-
-                    else
-                    {
-                        conv_col = test_col;
-                        
-                        conv_col = int(conv_col/100)-1 ;
-
-                        if (conv_col<=0)
-                        {
-                            conv_col = 0;
-                        }
-
-                        //cout << conv_col <<endl;
-
-                        id_conv_col = conv_col*3;
-
-
-                        col_r = haxby[id_conv_col]*12.5;
-                        col_g = haxby[id_conv_col+1]*12.5;
-                        col_b = haxby[id_conv_col+2]*12.5;
-
-
-                        ofst << col_r <<" "<<col_g<<" "<<col_b<<endl ;
-                    }
-                    
-                    
+                    ofst << set_point[i][j] <<" "; 
                 }
             }
-
-            delete set_point;
             
         }
-
-    
     f_2.close();
     ofst.close();
 
